@@ -66,7 +66,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    border-color: var(--border);
   }
 
   html {
@@ -78,7 +78,9 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    font-family: var(--font-sans);
+    background-color: var(--background);
+    color: var(--foreground);
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -112,7 +114,8 @@
 
   /* Focus visible for accessibility */
   :focus-visible {
-    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+    outline: none;
+    box-shadow: 0 0 0 2px var(--background), 0 0 0 4px var(--ring);
   }
 }
 
@@ -141,15 +144,22 @@
 
   /* Premium card styles */
   .card-elevated {
-    @apply rounded-2xl border border-border bg-card p-6 sm:p-8;
+    @apply rounded-2xl p-6 sm:p-8;
     @apply shadow-sm hover:shadow-lg transition-all duration-300;
-    @apply hover:border-border/80;
+    border: 1px solid var(--border);
+    background-color: var(--card);
+  }
+
+  .card-elevated:hover {
+    border-color: var(--border);
   }
 
   .card-glass {
-    @apply rounded-2xl border border-border/50 p-6 sm:p-8;
-    @apply backdrop-blur-xl bg-card/80;
+    @apply rounded-2xl p-6 sm:p-8;
+    @apply backdrop-blur-xl;
     @apply shadow-lg shadow-black/[0.03];
+    border: 1px solid oklch(90% 0.008 250 / 0.5);
+    background-color: oklch(100% 0 0 / 0.8);
   }
 
   .card-interactive {
@@ -161,36 +171,50 @@
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2;
     @apply rounded-xl px-6 py-3 text-sm font-semibold;
-    @apply bg-accent text-accent-foreground;
     @apply hover:opacity-90 active:scale-[0.98];
     @apply transition-all duration-200;
-    @apply shadow-md shadow-accent/20;
+    background-color: var(--accent);
+    color: var(--accent-foreground);
+    box-shadow: 0 4px 14px oklch(55% 0.22 260 / 0.2);
   }
 
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2;
     @apply rounded-xl px-6 py-3 text-sm font-semibold;
-    @apply border border-border bg-background text-foreground;
-    @apply hover:bg-secondary active:scale-[0.98];
+    @apply active:scale-[0.98];
     @apply transition-all duration-200;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    color: var(--foreground);
+  }
+
+  .btn-secondary:hover {
+    background-color: var(--secondary);
   }
 
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2;
     @apply rounded-xl px-4 py-2 text-sm font-medium;
-    @apply text-foreground hover:bg-secondary;
     @apply transition-all duration-200;
+    color: var(--foreground);
+  }
+
+  .btn-ghost:hover {
+    background-color: var(--secondary);
   }
 
   /* Badge styles */
   .badge {
     @apply inline-flex items-center gap-1.5;
     @apply rounded-full px-3 py-1 text-xs font-medium;
-    @apply bg-secondary text-secondary-foreground;
+    background-color: var(--secondary);
+    color: var(--secondary-foreground);
   }
 
   .badge-accent {
-    @apply badge bg-accent/10 text-accent;
+    @apply badge;
+    background-color: oklch(55% 0.22 260 / 0.1);
+    color: var(--accent);
   }
 
   /* Gradient text */
@@ -258,7 +282,8 @@
   .icon-box {
     @apply flex items-center justify-center;
     @apply w-10 h-10 sm:w-12 sm:h-12 rounded-xl;
-    @apply bg-accent/10 text-accent;
+    background-color: oklch(55% 0.22 260 / 0.1);
+    color: var(--accent);
   }
 
   .icon-box-lg {
@@ -273,15 +298,18 @@
 
   /* Section heading styles */
   .section-label {
-    @apply text-xs sm:text-sm uppercase tracking-[0.2em] font-medium text-muted-foreground mb-4;
+    @apply text-xs sm:text-sm uppercase tracking-[0.2em] font-medium mb-4;
+    color: var(--muted-foreground);
   }
 
   .section-title {
-    @apply text-3xl sm:text-4xl lg:text-5xl font-bold text-foreground mb-4;
+    @apply text-3xl sm:text-4xl lg:text-5xl font-bold mb-4;
+    color: var(--foreground);
   }
 
   .section-description {
-    @apply text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto;
+    @apply text-base sm:text-lg max-w-2xl mx-auto;
+    color: var(--muted-foreground);
   }
 }
 
