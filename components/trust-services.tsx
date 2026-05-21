@@ -1,11 +1,17 @@
 'use client'
 
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useState } from 'react'
 import Link from 'next/link'
-import { Activity, Layers, Landmark, FileText, Building2, Cloud, Zap, Settings, Code, RefreshCw, Users, Shield, Database, Rocket } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { 
+  Zap, Rocket, Landmark, FileText, RefreshCw, Activity, 
+  Code, Layers, Settings, Building2, Cloud, Shield, 
+  Database, Users, ArrowRight 
+} from 'lucide-react'
 import { serviceCategories } from '@/lib/content'
+import { FadeInUp, StaggerContainer, StaggerItem } from '@/lib/animations'
 
-const serviceIcons: Record<string, React.ComponentType<{ size?: number }>> = {
+const serviceIcons: Record<string, React.ComponentType<{ className?: string }>> = {
   'ai-agents': Zap,
   'custom-ai-solutions': Rocket,
   'computer-vision': Landmark,
@@ -26,121 +32,160 @@ const serviceIcons: Record<string, React.ComponentType<{ size?: number }>> = {
   'technical-support': Users,
 }
 
-export function TrustBar() {
-  const stats = [
-    { value: '7+', label: 'Years experience' },
-    { value: '50+', label: 'Projects completed' },
-    { value: '14', label: 'Industries served' },
-    { value: 'US + Europe', label: 'Primary markets' },
-    { value: '95%', label: 'Client satisfaction' },
-  ]
+const stats = [
+  { value: '7+', label: 'Years of Experience' },
+  { value: '50+', label: 'Projects Delivered' },
+  { value: '14', label: 'Industries Served' },
+  { value: '95%', label: 'Client Satisfaction' },
+]
 
+export function TrustBar() {
   return (
-    <section style={{ backgroundColor: 'var(--background)', borderTopColor: 'var(--border)', borderBottomColor: 'var(--border)' }} className="py-10 sm:py-12 px-4 sm:px-6 lg:px-8 border-t border-b">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 sm:gap-6 text-center">
+    <section className="section-wrapper-sm bg-secondary/50">
+      <div className="container-lg">
+        <StaggerContainer className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {stats.map((stat) => (
-            <div key={stat.label} className="py-4 sm:py-6 px-3 sm:px-4 rounded-2xl border border-[var(--border)] bg-[var(--background)]">
-              <div style={{ color: 'var(--accent)' }} className="text-2xl sm:text-3xl font-bold">
-                {stat.value}
+            <StaggerItem key={stat.label}>
+              <div className="text-center p-6 sm:p-8 rounded-2xl bg-card border border-border">
+                <div className="stat-value mb-2">{stat.value}</div>
+                <div className="text-sm text-muted-foreground">{stat.label}</div>
               </div>
-              <div style={{ color: 'var(--muted-foreground)' }} className="text-xs sm:text-sm mt-1.5 sm:mt-2">
-                {stat.label}
-              </div>
-            </div>
+            </StaggerItem>
           ))}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   )
 }
 
+const tabs = [
+  { id: 'ai-data', label: 'AI & Data', icon: Zap },
+  { id: 'software', label: 'Software', icon: Code },
+  { id: 'infrastructure', label: 'Infrastructure', icon: Cloud },
+] as const
+
+type TabId = (typeof tabs)[number]['id']
+
 export function ServicesGrid() {
-  const gridRef = useRef<HTMLDivElement>(null)
-  const [activeTab, setActiveTab] = useState<'ai-data' | 'infrastructure' | 'consulting'>('ai-data')
+  const [activeTab, setActiveTab] = useState<TabId>('ai-data')
 
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!gridRef.current) return
-      const cards = gridRef.current.querySelectorAll('[data-fade]')
-      cards.forEach((card) => {
-        const rect = card.getBoundingClientRect()
-        if (rect.top < window.innerHeight) {
-          card.classList.add('animate-fade-up')
-        }
-      })
-    }
+  const allServices = serviceCategories.flatMap((category) => category.items)
 
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [activeTab])
-
-  const allServices = useMemo(() => serviceCategories.flatMap((category) => category.items), [])
-
-  const tabbedServices = useMemo(
-    () => ({
-      'ai-data': allServices.filter((service) => ['ai-agents', 'custom-ai-solutions', 'computer-vision', 'nlp-systems'].includes(service.slug)),
-      infrastructure: allServices.filter((service) => ['cloud-solutions', 'infrastructure', 'devops', 'cybersecurity'].includes(service.slug)),
-      consulting: allServices.filter((service) => ['it-consulting', 'digital-transformation', 'enterprise-apps', 'technical-support'].includes(service.slug)),
-    }),
-    [allServices],
-  )
+  const tabbedServices = {
+    'ai-data': allServices.filter((service) => 
+      ['ai-agents', 'custom-ai-solutions', 'computer-vision', 'nlp-systems', 'workflow-automation', 'chatbots'].includes(service.slug)
+    ),
+    software: allServices.filter((service) => 
+      ['web-development', 'saas-development', 'custom-software', 'enterprise-apps', 'api-integrations'].includes(service.slug)
+    ),
+    infrastructure: allServices.filter((service) => 
+      ['cloud-solutions', 'infrastructure', 'devops', 'cybersecurity', 'it-consulting', 'digital-transformation'].includes(service.slug)
+    ),
+  }
 
   return (
-    <section id="services" style={{ backgroundColor: 'var(--background)' }} className="py-14 sm:py-20 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 style={{ color: 'var(--foreground)' }} className="text-3xl sm:text-5xl font-bold mb-4">
-            What We Do
-          </h2>
-          <p style={{ color: 'var(--muted-foreground)' }} className="text-lg max-w-2xl mx-auto">
-            Comprehensive services to modernize your infrastructure and accelerate your engineering.
+    <section id="services" className="section-wrapper bg-background">
+      <div className="container-lg">
+        {/* Section Header */}
+        <FadeInUp className="text-center mb-12 sm:mb-16">
+          <p className="section-label">Our Services</p>
+          <h2 className="section-title">What We Build</h2>
+          <p className="section-description">
+            Comprehensive solutions to modernize your infrastructure and accelerate engineering velocity.
           </p>
-        </div>
+        </FadeInUp>
 
-        <div className="mb-6 sm:mb-8 flex gap-2 sm:gap-3 overflow-x-auto pb-2" role="tablist" aria-label="Service categories">
-          {[
-            { id: 'ai-data' as const, label: 'AI & Data' },
-            { id: 'infrastructure' as const, label: 'IT Infrastructure' },
-            { id: 'consulting' as const, label: 'Consulting' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              role="tab"
-              aria-selected={activeTab === tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`shrink-0 rounded-full px-4 sm:px-5 py-2.5 text-sm font-semibold transition-colors ${
-                activeTab === tab.id ? 'bg-[var(--accent)] text-[var(--accent-foreground)]' : 'bg-slate-100 text-slate-900'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        {/* Tabs */}
+        <FadeInUp delay={0.1} className="flex justify-center mb-10">
+          <div className="inline-flex p-1.5 rounded-2xl bg-secondary">
+            {tabs.map((tab) => {
+              const Icon = tab.icon
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`relative flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                    activeTab === tab.id
+                      ? 'text-accent-foreground'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {activeTab === tab.id && (
+                    <motion.div
+                      layoutId="services-tab"
+                      className="absolute inset-0 bg-accent rounded-xl shadow-lg shadow-accent/20"
+                      transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
+                    />
+                  )}
+                  <Icon className="w-4 h-4 relative z-10" />
+                  <span className="relative z-10 hidden sm:inline">{tab.label}</span>
+                </button>
+              )
+            })}
+          </div>
+        </FadeInUp>
 
-        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-          {tabbedServices[activeTab].map((service) => {
-            const Icon = serviceIcons[service.slug]
-            return (
-              <div key={service.slug} data-fade="" className="p-5 sm:p-6 rounded-2xl border border-[var(--border)] bg-[var(--background)] hover:shadow-lg transition-shadow">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div style={{ color: 'var(--accent)' }} className="p-2 rounded-md bg-[rgba(59,130,246,0.08)]">
-                      {Icon ? <Icon size={20} /> : null}
+        {/* Services Grid */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeTab}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6"
+          >
+            {tabbedServices[activeTab].map((service, index) => {
+              const Icon = serviceIcons[service.slug]
+              return (
+                <motion.div
+                  key={service.slug}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                >
+                  <Link
+                    href={`/services/${service.slug}`}
+                    className="group card-interactive flex flex-col h-full"
+                  >
+                    <div className="flex items-start justify-between gap-4 mb-4">
+                      <div className="icon-box">
+                        {Icon && <Icon className="w-5 h-5" />}
+                      </div>
+                      <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
                     </div>
-                    <h4 style={{ color: 'var(--foreground)' }} className="text-base font-semibold leading-snug">{service.title}</h4>
-                  </div>
-                  <Link href={`/services/${service.slug}`} className="text-sm text-[var(--accent)] font-medium">
-                    Learn more -&gt;
+                    
+                    <h3 className="text-lg font-semibold text-foreground mb-2 group-hover:text-accent transition-colors">
+                      {service.title}
+                    </h3>
+                    
+                    <p className="text-sm text-muted-foreground mb-4 flex-1">
+                      {service.description}
+                    </p>
+                    
+                    <div className="pt-4 border-t border-border">
+                      <p className="text-sm">
+                        <span className="text-muted-foreground">Outcome: </span>
+                        <span className="font-medium text-accent">{service.outcome}</span>
+                      </p>
+                    </div>
                   </Link>
-                </div>
-                <p style={{ color: 'var(--muted-foreground)' }} className="text-sm mb-3">{service.description}</p>
-                <div className="text-sm text-[var(--foreground)] font-semibold">Outcome: <span className="text-[var(--accent)] font-bold">{service.outcome}</span></div>
-              </div>
-            )
-          })}
-        </div>
+                </motion.div>
+              )
+            })}
+          </motion.div>
+        </AnimatePresence>
+
+        {/* View All Link */}
+        <FadeInUp delay={0.2} className="text-center mt-10">
+          <Link 
+            href="/services" 
+            className="inline-flex items-center gap-2 text-sm font-medium text-accent hover:underline"
+          >
+            View all services
+            <ArrowRight className="w-4 h-4" />
+          </Link>
+        </FadeInUp>
       </div>
     </section>
   )

@@ -1,45 +1,115 @@
+'use client'
+
 import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { ArrowRight, ArrowLeft } from 'lucide-react'
 import { serviceCategories } from '@/lib/content'
+import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/cta-footer'
+import { FadeInUp, StaggerContainer, StaggerItem } from '@/lib/animations'
 
 export default function ServicesPage() {
   return (
-    <main className="min-h-screen bg-background">
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <p className="text-sm uppercase tracking-[0.25em] text-[var(--muted-foreground)] mb-4">Services</p>
-            <h1 className="text-4xl sm:text-5xl font-bold text-[var(--foreground)] mb-4">Solutions built for growth, resilience, and speed.</h1>
-            <p className="text-lg text-[var(--muted-foreground)] max-w-3xl mx-auto">
-              Explore service capabilities for AI, software, cloud, and IT operations designed to help your team move faster with confidence.
-            </p>
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-background pt-20">
+        {/* Hero */}
+        <section className="section-wrapper bg-background">
+          <div className="container-lg">
+            <FadeInUp className="max-w-3xl">
+              <Link 
+                href="/" 
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                Back to Home
+              </Link>
+              <p className="section-label">Our Services</p>
+              <h1 className="text-foreground mb-6">
+                Solutions Built for Growth, Resilience, and Speed
+              </h1>
+              <p className="text-lg text-muted-foreground">
+                Explore service capabilities for AI, software, cloud, and IT operations 
+                designed to help your team move faster with confidence.
+              </p>
+            </FadeInUp>
           </div>
+        </section>
 
-          <div className="space-y-14">
-            {serviceCategories.map((category) => (
-              <div key={category.category}>
-                <h2 className="text-2xl font-semibold text-[var(--foreground)] mb-6">{category.category}</h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {category.items.map((service) => (
-                    <Link
-                      key={service.slug}
-                      href={`/services/${service.slug}`}
-                      className="group rounded-3xl border border-[var(--border)] bg-[var(--background)] p-8 transition hover:-translate-y-1 hover:shadow-xl"
-                    >
-                      <div className="mb-4 text-sm uppercase tracking-[0.25em] text-[var(--accent)]">{category.category}</div>
-                      <h3 className="text-xl font-semibold text-[var(--foreground)] mb-3">{service.title}</h3>
-                      <p className="text-sm leading-relaxed text-[var(--muted-foreground)] mb-6">{service.description}</p>
-                      <div className="text-sm font-semibold text-[var(--foreground)]">
-                        Outcome: <span className="text-[var(--accent)]">{service.outcome}</span>
-                      </div>
-                      <p className="mt-6 text-sm font-medium text-[var(--accent)]">Learn more →</p>
+        {/* Services by Category */}
+        {serviceCategories.map((category, categoryIndex) => (
+          <section 
+            key={category.category} 
+            className={`section-wrapper-sm ${categoryIndex % 2 === 0 ? 'bg-secondary/30' : 'bg-background'}`}
+          >
+            <div className="container-lg">
+              <FadeInUp className="mb-10">
+                <h2 className="text-2xl sm:text-3xl font-bold text-foreground">
+                  {category.category}
+                </h2>
+              </FadeInUp>
+
+              <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+                {category.items.map((service) => (
+                  <StaggerItem key={service.slug}>
+                    <Link href={`/services/${service.slug}`}>
+                      <motion.div
+                        whileHover={{ y: -4 }}
+                        className="group card-elevated h-full flex flex-col"
+                      >
+                        <div className="flex items-start justify-between gap-4 mb-4">
+                          <span className="badge-accent text-xs">
+                            {category.category}
+                          </span>
+                          <ArrowRight className="w-4 h-4 text-muted-foreground opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
+                        </div>
+                        
+                        <h3 className="text-xl font-semibold text-foreground mb-3 group-hover:text-accent transition-colors">
+                          {service.title}
+                        </h3>
+                        
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-6 flex-1">
+                          {service.description}
+                        </p>
+                        
+                        <div className="pt-4 border-t border-border">
+                          <p className="text-sm">
+                            <span className="text-muted-foreground">Outcome: </span>
+                            <span className="font-medium text-accent">{service.outcome}</span>
+                          </p>
+                        </div>
+                      </motion.div>
                     </Link>
-                  ))}
-                </div>
-              </div>
-            ))}
+                  </StaggerItem>
+                ))}
+              </StaggerContainer>
+            </div>
+          </section>
+        ))}
+
+        {/* CTA */}
+        <section className="section-wrapper bg-foreground text-background">
+          <div className="container-md text-center">
+            <FadeInUp>
+              <h2 className="text-3xl sm:text-4xl font-bold mb-6">
+                Not Sure Where to Start?
+              </h2>
+              <p className="text-lg text-background/70 max-w-xl mx-auto mb-8">
+                Book a free 30-minute consultation and we&apos;ll help identify 
+                the highest-impact opportunities for your team.
+              </p>
+              <Link 
+                href="/#contact"
+                className="btn-primary inline-flex"
+              >
+                Schedule a Call
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </FadeInUp>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+      <Footer />
+    </>
   )
 }

@@ -1,7 +1,10 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react'
 import { getAllCaseStudySlugs, getCaseStudyBySlug } from '@/lib/content'
+import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/cta-footer'
 
 type Params = {
   params: Promise<{
@@ -25,7 +28,7 @@ export async function generateMetadata({ params }: Params): Promise<Metadata> {
   }
 
   return {
-    title: `${caseStudy.projectType} | Keytrain case study`,
+    title: `${caseStudy.projectType} | Keytrain Case Study`,
     description: caseStudy.summary,
   }
 }
@@ -38,59 +41,93 @@ export default async function CaseStudyPage({ params }: Params) {
   }
 
   return (
-    <main className="min-h-screen bg-background">
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-10">
-            <Link href="/case-studies" className="text-sm font-medium text-[var(--accent)] hover:underline">
-              ← Back to case studies
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-background pt-20">
+        <section className="section-wrapper">
+          <div className="container-md">
+            {/* Back Link */}
+            <Link 
+              href="/case-studies" 
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Case Studies
             </Link>
-          </div>
 
-          <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--secondary)] p-10 shadow-sm">
-            <div className="mb-8">
-              <span className="inline-flex rounded-full bg-[rgba(59,130,246,0.1)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-[var(--accent)]">
+            {/* Header */}
+            <div className="mb-12">
+              <span className="badge-accent mb-4 inline-flex">
                 {study.tag}
               </span>
-              <h1 className="mt-4 text-5xl font-bold text-[var(--foreground)] mb-4">{study.projectType}</h1>
-              <p className="text-lg text-[var(--muted-foreground)] max-w-3xl">{study.challenge}</p>
+              <h1 className="text-foreground mb-4">
+                {study.projectType}
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-2xl">
+                {study.summary}
+              </p>
             </div>
 
-            <div className="grid gap-8 lg:grid-cols-2">
-              <div className="rounded-3xl border border-[var(--border)] bg-[var(--background)] p-8">
-                <h2 className="text-xl font-semibold text-[var(--foreground)] mb-4">Challenge</h2>
-                <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">{study.challenge}</p>
+            {/* Challenge & Solution */}
+            <div className="grid lg:grid-cols-2 gap-6 mb-8">
+              <div className="card-elevated">
+                <h2 className="text-xl font-semibold text-foreground mb-4">
+                  The Challenge
+                </h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  {study.challenge}
+                </p>
               </div>
-              <div className="rounded-3xl border border-[var(--border)] bg-[var(--background)] p-8">
-                <h2 className="text-xl font-semibold text-[var(--foreground)] mb-4">Solution</h2>
-                <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">{study.solution}</p>
+
+              <div className="card-elevated">
+                <h2 className="text-xl font-semibold text-foreground mb-4">
+                  Our Solution
+                </h2>
+                <p className="text-muted-foreground leading-relaxed">
+                  {study.solution}
+                </p>
               </div>
             </div>
 
-            <div className="mt-8 rounded-3xl border border-[var(--border)] bg-[var(--background)] p-8">
-              <h2 className="text-xl font-semibold text-[var(--foreground)] mb-4">Outcome</h2>
-              <p className="text-sm text-[var(--muted-foreground)] leading-relaxed mb-4">{study.outcome}</p>
-              <ul className="grid gap-3 text-sm text-[var(--muted-foreground)]">
+            {/* Outcome & Metrics */}
+            <div className="card-elevated mb-12">
+              <h2 className="text-xl font-semibold text-foreground mb-6">
+                Results Delivered
+              </h2>
+              
+              <div className="p-6 rounded-xl bg-secondary mb-6">
+                <p className="text-lg font-medium text-foreground">
+                  {study.outcome}
+                </p>
+              </div>
+
+              <div className="grid sm:grid-cols-3 gap-4">
                 {study.metrics.map((metric) => (
-                  <li key={metric} className="flex items-start gap-3">
-                    <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
-                    <span>{metric}</span>
-                  </li>
+                  <div 
+                    key={metric} 
+                    className="flex items-center gap-3 p-4 rounded-xl bg-accent/5 border border-accent/10"
+                  >
+                    <CheckCircle className="w-5 h-5 text-accent flex-shrink-0" />
+                    <span className="text-sm font-medium text-foreground">{metric}</span>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
 
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <Link href="/#contact" className="inline-flex items-center justify-center rounded-2xl bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--accent-foreground)] hover:opacity-90 transition-opacity">
-                Book a quick call
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/#contact" className="btn-primary">
+                Discuss Your Project
+                <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link href="/services" className="inline-flex items-center justify-center rounded-2xl border border-[var(--border)] px-6 py-3 text-sm font-semibold text-[var(--foreground)] hover:bg-[var(--secondary)] transition-colors">
-                View services
+              <Link href="/services" className="btn-secondary">
+                Explore Our Services
               </Link>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+      <Footer />
+    </>
   )
 }

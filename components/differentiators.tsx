@@ -1,136 +1,173 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
-import { CheckCircle, Clock, Users, Zap, Layers, Globe } from 'lucide-react'
+import { motion } from 'framer-motion'
+import { CheckCircle, Clock, Users, Zap, Layers, Globe, ArrowRight } from 'lucide-react'
+import { FadeInUp, StaggerContainer, StaggerItem } from '@/lib/animations'
+
+const differentiators = [
+  { 
+    icon: CheckCircle, 
+    title: 'Senior Engineering Expertise', 
+    description: 'Every engagement is led by senior engineers with 10+ years of experience building production systems at scale.' 
+  },
+  { 
+    icon: Zap, 
+    title: 'AI-First Development', 
+    description: 'We prioritize AI and automation that creates measurable business value, not just technical novelty.' 
+  },
+  { 
+    icon: Clock, 
+    title: 'Fast Delivery Cycles', 
+    description: 'Short sprints, frequent demos, and continuous deployment keep momentum high and risks low.' 
+  },
+  { 
+    icon: Layers, 
+    title: 'Startup Speed + Enterprise Quality', 
+    description: 'Move fast without breaking things. We balance velocity with reliability and security.' 
+  },
+  { 
+    icon: Users, 
+    title: 'Transparent Communication', 
+    description: 'Weekly updates, direct access to engineers, and clear reporting — no black boxes.' 
+  },
+  { 
+    icon: Globe, 
+    title: 'Long-term Partnership', 
+    description: 'We build maintainable systems and stay engaged for ongoing growth and optimization.' 
+  },
+]
+
+const processSteps = [
+  { 
+    step: '01', 
+    title: 'Discovery Call', 
+    description: 'Align on goals, scope, and success metrics in a 30-minute intro call.',
+    duration: 'Day 1'
+  },
+  { 
+    step: '02', 
+    title: 'Technical Planning', 
+    description: 'Architecture design, milestone definition, and detailed proposal.',
+    duration: 'Week 1'
+  },
+  { 
+    step: '03', 
+    title: 'Development Sprint', 
+    description: 'Iterative delivery with weekly demos and continuous feedback.',
+    duration: 'Weeks 2-8'
+  },
+  { 
+    step: '04', 
+    title: 'QA & Testing', 
+    description: 'Automated and manual validation for production reliability.',
+    duration: 'Ongoing'
+  },
+  { 
+    step: '05', 
+    title: 'Launch', 
+    description: 'Production deployment with monitoring and rollback plans.',
+    duration: 'Week 8+'
+  },
+  { 
+    step: '06', 
+    title: 'Ongoing Support', 
+    description: 'SLA-backed support, maintenance, and continuous improvements.',
+    duration: 'Post-launch'
+  },
+]
 
 export function Differentiators() {
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (containerRef.current) {
-        const items = containerRef.current.querySelectorAll('[data-diff]')
-        items.forEach((item, index) => {
-          const rect = item.getBoundingClientRect()
-          if (rect.top < window.innerHeight) {
-            setTimeout(() => {
-              item.classList.add('animate-fade-up')
-            }, index * 100)
-          }
-        })
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const diffs = [
-    { icon: CheckCircle, title: 'Senior engineering expertise', description: 'Hands-on senior engineers lead every engagement — not juniors.' },
-    { icon: Zap, title: 'AI-first development', description: 'We prioritize data and models that create measurable business value.' },
-    { icon: Clock, title: 'Fast delivery cycles', description: 'Short sprints and frequent demos keep momentum and reduce risk.' },
-    { icon: Layers, title: 'Startup speed + enterprise quality', description: 'Move quickly while maintaining high reliability and security.' },
-    { icon: Users, title: 'Transparent communication', description: 'Weekly updates, access to engineers, and clear reporting.' },
-    { icon: Globe, title: 'Long-term technical partnership', description: 'We focus on maintainable systems and ongoing growth.' },
-  ]
-
   return (
-    <section id="why-choose-us" className="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 style={{ color: 'var(--foreground)' }} className="text-4xl sm:text-5xl font-bold mb-4">
-            Why Choose Keytrain?
-          </h2>
-          <p style={{ color: 'var(--muted-foreground)' }} className="text-lg max-w-2xl mx-auto">
-            Industry-leading technology combined with exceptional support and results.
+    <section id="why-choose-us" className="section-wrapper bg-secondary/30">
+      <div className="container-lg">
+        {/* Section Header */}
+        <FadeInUp className="text-center mb-12 sm:mb-16">
+          <p className="section-label">Why Choose Us</p>
+          <h2 className="section-title">Built Different</h2>
+          <p className="section-description">
+            We combine startup agility with enterprise-grade engineering practices.
           </p>
-        </div>
+        </FadeInUp>
 
-        <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
-          {diffs.map((item, i) => {
-            const Icon = item.icon as any
+        {/* Differentiators Grid */}
+        <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {differentiators.map((item) => {
+            const Icon = item.icon
             return (
-              <div key={i} data-diff="" className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-5 sm:p-6 hover:shadow-lg transition-shadow">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="p-2 rounded-md bg-[rgba(59,130,246,0.08)] text-[var(--accent)]">
-                    {Icon ? <Icon size={20} /> : null}
+              <StaggerItem key={item.title}>
+                <div className="card-elevated h-full">
+                  <div className="icon-box mb-4">
+                    <Icon className="w-5 h-5" />
                   </div>
-                  <h3 style={{ color: 'var(--foreground)' }} className="text-xl font-semibold">{item.title}</h3>
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {item.description}
+                  </p>
                 </div>
-                <p style={{ color: 'var(--muted-foreground)' }} className="leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
+              </StaggerItem>
             )
           })}
-        </div>
+        </StaggerContainer>
       </div>
     </section>
   )
 }
 
 export function HowItWorks() {
-  const containerRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (containerRef.current) {
-        const steps = containerRef.current.querySelectorAll('[data-step]')
-        steps.forEach((step) => {
-          const rect = step.getBoundingClientRect()
-          if (rect.top < window.innerHeight) {
-            step.classList.add('animate-fade-up')
-          }
-        })
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  const steps = [
-    { title: 'Discovery Call', description: 'Align on goals, scope, and success metrics.' },
-    { title: 'Technical Planning', description: 'Architecture, milestones, and deliverables.' },
-    { title: 'Development Sprint', description: 'Iterative delivery with weekly demos.' },
-    { title: 'QA & Testing', description: 'Automated and manual validation for reliability.' },
-    { title: 'Launch', description: 'Production rollout and monitoring.' },
-    { title: 'Ongoing Support', description: 'SLA-backed support and continuous improvements.' },
-  ]
-
   return (
-    <section id="process" className="py-14 sm:py-20 px-4 sm:px-6 lg:px-8 bg-gray-50">
-      <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-16">
-          <h2 style={{ color: 'var(--foreground)' }} className="text-4xl sm:text-5xl font-bold mb-4">
-            How It Works
-          </h2>
-          <p style={{ color: 'var(--muted-foreground)' }} className="text-lg max-w-2xl mx-auto">
-            Get started in four simple steps and see results within weeks.
+    <section id="process" className="section-wrapper bg-background">
+      <div className="container-lg">
+        {/* Section Header */}
+        <FadeInUp className="text-center mb-12 sm:mb-16">
+          <p className="section-label">Our Process</p>
+          <h2 className="section-title">How We Work</h2>
+          <p className="section-description">
+            A proven methodology that reduces risk and accelerates time-to-value.
           </p>
-        </div>
+        </FadeInUp>
 
-        <div ref={containerRef} className="grid grid-cols-1 md:grid-cols-6 gap-5 sm:gap-8 relative">
-          <div style={{ backgroundColor: 'var(--border)' }} className="hidden md:block absolute top-8 left-0 right-0 h-px" />
-
-          {steps.map((step, i) => (
-            <div key={i} data-step="" className="relative text-center md:text-left">
-              <div className="mx-auto md:mx-0 w-12 h-12 rounded-full bg-[rgba(59,130,246,0.08)] border border-[var(--accent)] flex items-center justify-center font-bold mb-4">
-                {i + 1}
-              </div>
-              <h3 style={{ color: 'var(--foreground)' }} className="text-lg font-semibold mb-2">
-                {step.title}
-              </h3>
-              <p style={{ color: 'var(--muted-foreground)' }} className="text-sm leading-relaxed">
-                {step.description}
-              </p>
-            </div>
-          ))}
+        {/* Process Timeline */}
+        <div className="relative">
+          {/* Connection Line - Desktop */}
+          <div className="hidden lg:block absolute top-12 left-0 right-0 h-px bg-gradient-to-r from-transparent via-border to-transparent" />
+          
+          <StaggerContainer className="grid sm:grid-cols-2 lg:grid-cols-6 gap-6 lg:gap-4">
+            {processSteps.map((item, index) => (
+              <StaggerItem key={item.step}>
+                <motion.div 
+                  className="relative text-center lg:text-left"
+                  whileHover={{ y: -4 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {/* Step Number */}
+                  <div className="relative z-10 mx-auto lg:mx-0 w-12 h-12 rounded-2xl bg-accent text-accent-foreground flex items-center justify-center text-sm font-bold mb-4 shadow-lg shadow-accent/20">
+                    {item.step}
+                  </div>
+                  
+                  {/* Arrow - Desktop only */}
+                  {index < processSteps.length - 1 && (
+                    <div className="hidden lg:block absolute top-5 left-14 text-muted-foreground">
+                      <ArrowRight className="w-4 h-4" />
+                    </div>
+                  )}
+                  
+                  <h3 className="text-base font-semibold text-foreground mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground mb-2 leading-relaxed">
+                    {item.description}
+                  </p>
+                  <p className="text-xs font-medium text-accent">
+                    {item.duration}
+                  </p>
+                </motion.div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
         </div>
       </div>
     </section>
   )
 }
-

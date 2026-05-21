@@ -1,7 +1,10 @@
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import type { Metadata } from 'next'
+import { ArrowLeft, ArrowRight, CheckCircle } from 'lucide-react'
 import { getAllServiceSlugs, getServiceBySlug } from '@/lib/content'
+import { Navbar } from '@/components/navbar'
+import { Footer } from '@/components/cta-footer'
 
 type Params = {
   params: Promise<{
@@ -38,64 +41,109 @@ export default async function ServicePage({ params }: Params) {
   }
 
   return (
-    <main className="min-h-screen bg-background">
-      <section className="py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-5xl mx-auto">
-          <div className="mb-10">
-            <Link href="/services" className="text-sm font-medium text-[var(--accent)] hover:underline">
-              ← Back to Services
+    <>
+      <Navbar />
+      <main className="min-h-screen bg-background pt-20">
+        <section className="section-wrapper">
+          <div className="container-md">
+            {/* Back Link */}
+            <Link 
+              href="/services" 
+              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-8 transition-colors"
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Services
             </Link>
-          </div>
 
-          <div className="rounded-[2rem] border border-[var(--border)] bg-[var(--secondary)] p-10 shadow-sm">
-            <div className="mb-8">
-              <p className="text-sm uppercase tracking-[0.28em] text-[var(--accent)] mb-4">{service.category}</p>
-              <h1 className="text-5xl font-bold text-[var(--foreground)] mb-4">{service.title}</h1>
-              <p className="text-lg text-[var(--muted-foreground)] max-w-3xl">{service.description}</p>
+            {/* Header */}
+            <div className="mb-12">
+              <span className="badge-accent mb-4 inline-flex">
+                {service.category}
+              </span>
+              <h1 className="text-foreground mb-4">
+                {service.title}
+              </h1>
+              <p className="text-lg text-muted-foreground max-w-2xl">
+                {service.description}
+              </p>
             </div>
 
-            <div className="grid gap-8 md:grid-cols-2">
-              <div className="rounded-3xl border border-[var(--border)] bg-[var(--background)] p-8">
-                <h2 className="text-xl font-semibold text-[var(--foreground)] mb-4">What you get</h2>
-                <ul className="space-y-3 text-sm text-[var(--muted-foreground)]">
+            {/* Content Grid */}
+            <div className="grid lg:grid-cols-2 gap-6 mb-12">
+              {/* Features */}
+              <div className="card-elevated">
+                <h2 className="text-xl font-semibold text-foreground mb-6">
+                  What You Get
+                </h2>
+                <ul className="space-y-4">
                   {service.features.map((feature) => (
                     <li key={feature} className="flex items-start gap-3">
-                      <span className="mt-1 h-2.5 w-2.5 rounded-full bg-[var(--accent)]" />
-                      <span>{feature}</span>
+                      <CheckCircle className="w-5 h-5 text-accent flex-shrink-0 mt-0.5" />
+                      <span className="text-muted-foreground">{feature}</span>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              <div className="rounded-3xl border border-[var(--border)] bg-[var(--background)] p-8">
-                <h2 className="text-xl font-semibold text-[var(--foreground)] mb-4">Expected outcome</h2>
-                <p className="text-sm text-[var(--muted-foreground)] leading-relaxed mb-6">
-                  {service.outcome}. Our team designs delivery plans and milestones to keep the work predictable and visible.
+              {/* Outcome */}
+              <div className="card-elevated">
+                <h2 className="text-xl font-semibold text-foreground mb-6">
+                  Expected Outcome
+                </h2>
+                <div className="p-6 rounded-xl bg-secondary mb-6">
+                  <p className="stat-value text-2xl mb-2">{service.outcome}</p>
+                </div>
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Our team designs delivery plans and milestones to keep the work 
+                  predictable and visible throughout the engagement.
                 </p>
-                <div className="rounded-3xl bg-[var(--background)] p-6 border border-[var(--border)]">
-                  <p className="text-sm text-[var(--muted-foreground)] mb-3">Quick start</p>
-                  <p className="font-semibold text-[var(--foreground)]">Discovery call → scoped plan → pilot sprint</p>
+              </div>
+            </div>
+
+            {/* Process */}
+            <div className="card-elevated mb-12">
+              <h2 className="text-xl font-semibold text-foreground mb-6">
+                How We Deliver
+              </h2>
+              <div className="grid sm:grid-cols-3 gap-6">
+                <div className="text-center sm:text-left">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center text-sm font-bold mb-3 mx-auto sm:mx-0">
+                    01
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-1">Discovery</h3>
+                  <p className="text-sm text-muted-foreground">Align on goals and scope</p>
+                </div>
+                <div className="text-center sm:text-left">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center text-sm font-bold mb-3 mx-auto sm:mx-0">
+                    02
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-1">Plan & Build</h3>
+                  <p className="text-sm text-muted-foreground">Iterative development sprints</p>
+                </div>
+                <div className="text-center sm:text-left">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 text-accent flex items-center justify-center text-sm font-bold mb-3 mx-auto sm:mx-0">
+                    03
+                  </div>
+                  <h3 className="font-semibold text-foreground mb-1">Launch & Support</h3>
+                  <p className="text-sm text-muted-foreground">Production rollout and ongoing care</p>
                 </div>
               </div>
             </div>
 
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
-              <Link
-                href="/#contact"
-                className="inline-flex w-full items-center justify-center rounded-2xl bg-[var(--accent)] px-6 py-3 text-sm font-semibold text-[var(--accent-foreground)] hover:opacity-90 transition-opacity sm:w-auto"
-              >
-                Schedule a consultation
+            {/* CTAs */}
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Link href="/#contact" className="btn-primary">
+                Schedule a Consultation
+                <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link
-                href="/case-studies"
-                className="inline-flex w-full items-center justify-center rounded-2xl border border-[var(--border)] px-6 py-3 text-sm font-semibold text-[var(--foreground)] hover:bg-[var(--secondary)] transition-colors sm:w-auto"
-              >
-                Review related case studies
+              <Link href="/case-studies" className="btn-secondary">
+                View Related Case Studies
               </Link>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
+        </section>
+      </main>
+      <Footer />
+    </>
   )
 }

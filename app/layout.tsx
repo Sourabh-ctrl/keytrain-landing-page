@@ -1,10 +1,19 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Syne, DM_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const syne = Syne({ subsets: ['latin'], variable: '--font-display' })
-const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-sans' })
+const syne = Syne({ 
+  subsets: ['latin'], 
+  variable: '--font-display',
+  display: 'swap',
+})
+
+const dmSans = DM_Sans({ 
+  subsets: ['latin'], 
+  variable: '--font-sans',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: 'Keytrain | AI, Software & IT Consulting',
@@ -54,14 +63,29 @@ export const metadata: Metadata = {
   },
 }
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#f8f9fa' },
+    { media: '(prefers-color-scheme: dark)', color: '#0f1419' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth" className={`${syne.variable} ${dmSans.variable}`}>
-      <body className="font-sans antialiased scroll-smooth">
+    <html 
+      lang="en" 
+      data-scroll-behavior="smooth"
+      className={`${syne.variable} ${dmSans.variable} bg-background`}
+      suppressHydrationWarning
+    >
+      <body className="font-sans antialiased">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>

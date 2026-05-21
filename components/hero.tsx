@@ -1,112 +1,176 @@
 'use client'
 
-import { useEffect, useRef } from 'react'
+import { motion } from 'framer-motion'
+import { ArrowRight, Zap, Shield, Globe } from 'lucide-react'
 import { ScheduleModal } from '@/components/schedule-modal'
+import Link from 'next/link'
+
+const stats = [
+  { value: '7+', label: 'Years Experience' },
+  { value: '50+', label: 'Projects Delivered' },
+  { value: '95%', label: 'Client Satisfaction' },
+]
+
+const technologies = ['AWS', 'GCP', 'Azure', 'React', 'Node.js', 'Python', 'Docker', 'Kubernetes']
 
 export function Hero() {
-  const titleRef = useRef<HTMLHeadingElement>(null)
-  const subtitleRef = useRef<HTMLParagraphElement>(null)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (titleRef.current) {
-        const rect = titleRef.current.getBoundingClientRect()
-        if (rect.top < window.innerHeight) {
-          titleRef.current.classList.add('animate-fade-up')
-        }
-      }
-      if (subtitleRef.current) {
-        const rect = subtitleRef.current.getBoundingClientRect()
-        if (rect.top < window.innerHeight) {
-          subtitleRef.current.classList.add('animate-fade-up')
-        }
-      }
-    }
-
-    window.addEventListener('scroll', handleScroll)
-    handleScroll()
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   return (
-    <section id="hero" className="min-h-screen flex items-center justify-center pt-16 px-4 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Subtle animated background blobs */}
-      <div className="absolute -left-16 -top-16 w-72 h-72 rounded-full bg-gradient-to-br from-blue-200 to-transparent opacity-30 animate-blob" />
-      <div className="absolute right-0 top-24 w-56 h-56 rounded-full bg-gradient-to-br from-slate-200 to-transparent opacity-20 animate-blob animation-delay-2000" />
+    <section id="hero" className="relative min-h-screen flex items-center pt-20 pb-16 overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-grid opacity-50" />
+      <div className="absolute top-1/4 -left-32 w-96 h-96 bg-accent/10 rounded-full blur-3xl" />
+      <div className="absolute bottom-1/4 -right-32 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+      
+      <div className="container-lg relative z-10">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          {/* Left Content */}
+          <div className="lg:col-span-7">
+            {/* Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 mb-6"
+            >
+              <span className="badge-accent">
+                <Zap className="w-3 h-3" />
+                Trusted by startups & enterprises
+              </span>
+            </motion.div>
 
-      <div className="max-w-5xl mx-auto relative z-10">
-        <div className="flex flex-col lg:flex-row items-start gap-10 lg:gap-16">
-          <div className="flex-1">
-            <div className="flex items-center gap-4 mb-4 flex-wrap">
-              <span className="text-sm text-muted">Trusted by startups & SMEs</span>
-              <span className="h-6 w-px bg-[var(--border)]" />
-              <span className="text-sm font-medium text-[var(--accent)]">Response within 24 hours</span>
-              <span className="h-6 w-px bg-[var(--border)]" />
-              <span className="text-sm">Serving US, Europe & India</span>
-            </div>
+            {/* Headline */}
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="text-foreground mb-6"
+            >
+              AI, Software & IT Solutions{' '}
+              <span className="gradient-text">That Actually Scale</span>
+            </motion.h1>
 
-            <h1 ref={titleRef} className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-[var(--foreground)]">
-              AI, Software & IT Solutions That Actually Scale
-            </h1>
+            {/* Description */}
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-lg sm:text-xl text-muted-foreground max-w-2xl mb-8"
+            >
+              We help startups and mid-market companies build scalable software, AI systems, 
+              and digital infrastructure — faster, smarter, and production-ready.
+            </motion.p>
 
-            <p ref={subtitleRef} className="mt-6 text-lg text-[var(--muted-foreground)] max-w-2xl">
-              We help startups and businesses build scalable software, AI systems, automation, and digital infrastructure — faster, smarter, and production-ready.
-            </p>
-
-            <div className="mt-8 flex flex-col sm:flex-row gap-4 items-start">
+            {/* CTA Buttons */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="flex flex-col sm:flex-row gap-4 mb-10"
+            >
               <ScheduleModal label="Book Free Consultation" />
-              <a href="/case-studies" className="inline-flex items-center justify-center rounded-2xl border border-[var(--border)] text-[var(--foreground)] px-6 py-3 font-semibold hover:bg-[var(--secondary)] transition-colors">View Case Studies</a>
-            </div>
+              <Link 
+                href="/case-studies" 
+                className="btn-secondary group"
+              >
+                View Case Studies
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
+              </Link>
+            </motion.div>
 
-            <div className="mt-8 flex items-center gap-6 flex-wrap">
-              <div className="text-sm text-[var(--muted-foreground)]">Industries: Fintech · Healthcare · Logistics · SaaS</div>
-              <div className="h-6 w-px bg-[var(--border)]" />
-              <div className="text-sm text-[var(--muted-foreground)]">Tech: React · Node · Python · AWS · Docker</div>
-            </div>
+            {/* Trust Indicators */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              className="flex flex-wrap items-center gap-6 text-sm text-muted-foreground"
+            >
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-accent" />
+                <span>SOC 2 Compliant</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Globe className="w-4 h-4 text-accent" />
+                <span>Serving US, Europe & India</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Zap className="w-4 h-4 text-accent" />
+                <span>24hr Response Time</span>
+              </div>
+            </motion.div>
           </div>
 
-          {/* Right column: small trust card */}
-          <div className="w-full lg:w-80">
-            <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-6 shadow-sm">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <div className="text-sm text-[var(--muted-foreground)]">Average response</div>
-                  <div className="text-lg font-bold text-[var(--foreground)]"><span className="text-[var(--accent)]">24</span> hours</div>
+          {/* Right Content - Stats Card */}
+          <div className="lg:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="relative"
+            >
+              {/* Glow effect */}
+              <div className="absolute -inset-4 bg-accent/10 rounded-3xl blur-2xl" />
+              
+              <div className="relative card-glass">
+                <div className="mb-6">
+                  <h3 className="text-lg font-semibold text-foreground mb-2">
+                    Why Engineering Leaders Choose Us
+                  </h3>
+                  <p className="text-sm text-muted-foreground">
+                    Senior-led teams delivering production-grade solutions
+                  </p>
                 </div>
-                <div className="text-xs text-[var(--muted-foreground)]">Serving US · Europe · India</div>
-              </div>
 
-              <div className="h-px bg-[var(--border)] my-4" />
+                <div className="space-y-4 mb-6">
+                  {stats.map((stat, index) => (
+                    <motion.div
+                      key={stat.label}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
+                      className="flex items-center justify-between py-3 border-b border-border last:border-0"
+                    >
+                      <span className="text-sm text-muted-foreground">{stat.label}</span>
+                      <span className="stat-value text-2xl">{stat.value}</span>
+                    </motion.div>
+                  ))}
+                </div>
 
-              <div className="space-y-3">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-[var(--accent)] flex items-center justify-center text-white font-semibold">7+</div>
-                  <div>
-                    <div className="text-sm text-[var(--muted-foreground)]">Years experience</div>
-                    <div className="text-sm font-semibold text-[var(--foreground)]">7+</div>
+                <div className="pt-4 border-t border-border">
+                  <p className="text-xs text-muted-foreground mb-3">Industries we serve</p>
+                  <div className="flex flex-wrap gap-2">
+                    {['Fintech', 'Healthcare', 'SaaS', 'Logistics'].map((industry) => (
+                      <span key={industry} className="badge text-xs">
+                        {industry}
+                      </span>
+                    ))}
                   </div>
                 </div>
-
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-slate-900 font-semibold">50+</div>
-                  <div>
-                    <div className="text-sm text-[var(--muted-foreground)]">Projects</div>
-                    <div className="text-sm font-semibold text-[var(--foreground)]">50+</div>
-                  </div>
-                </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
 
-        {/* Minimal tech strip */}
-        <div className="mt-10 overflow-x-auto">
-          <div className="flex items-center gap-3 min-w-max py-2">
-            {['AWS','GCP','Azure','React','Node.js','Python','Docker','Kubernetes'].map((t) => (
-              <div key={t} className="rounded-full bg-slate-100 px-4 py-2 text-sm font-medium text-slate-900 whitespace-nowrap">{t}</div>
+        {/* Tech Stack Strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+          className="mt-16 pt-8 border-t border-border"
+        >
+          <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-4 text-center">
+            Technologies we work with
+          </p>
+          <div className="flex flex-wrap justify-center gap-3">
+            {technologies.map((tech) => (
+              <span
+                key={tech}
+                className="px-4 py-2 rounded-full bg-secondary text-sm font-medium text-secondary-foreground"
+              >
+                {tech}
+              </span>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )
