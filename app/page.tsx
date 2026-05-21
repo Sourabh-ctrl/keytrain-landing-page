@@ -10,8 +10,10 @@ import {
   EngagementModels,
   MeetTheTeam,
   FAQSection,
+  InsightsSection,
   ContactFormSection,
 } from '@/components/extra-sections'
+import { Toaster } from '@/components/ui/toaster'
 
 export default function Home() {
   return (
@@ -29,9 +31,11 @@ export default function Home() {
       <MeetTheTeam />
       <Testimonials />
       <FAQSection />
+      <InsightsSection />
       <CTABanner />
       <ContactFormSection />
       <Footer />
+      <Toaster />
     </main>
   )
 }

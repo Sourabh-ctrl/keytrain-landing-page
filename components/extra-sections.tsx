@@ -1,10 +1,9 @@
 'use client'
 
-import { useState, FormEvent } from 'react'
+import { useEffect, useState, FormEvent } from 'react'
 import {
   Atom,
   Box,
-  ChevronDown,
   CircleCheck,
   Cloud,
   CloudRain,
@@ -31,6 +30,8 @@ import {
   Zap,
   Clock4,
 } from 'lucide-react'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { toast } from '@/hooks/use-toast'
 
 const techStack = [
   { icon: Cloud, label: 'AWS' },
@@ -214,7 +215,7 @@ export function TechStackStrip() {
 
 export function IndustriesGrid() {
   return (
-    <section style={{ backgroundColor: 'var(--secondary)' }} className="py-16 px-4 sm:px-6 lg:px-8">
+    <section id="industries" style={{ backgroundColor: 'var(--secondary)' }} className="py-14 sm:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 style={{ color: 'var(--foreground)' }} className="text-3xl sm:text-4xl font-bold mb-4">
@@ -224,11 +225,11 @@ export function IndustriesGrid() {
             We understand your domain, not just your stack.
           </p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
           {industries.map((industry) => {
             const Icon = industry.icon
             return (
-              <div key={industry.title} className="rounded-3xl border border-[var(--border)] bg-[var(--background)] p-8 transition-transform hover:-translate-y-1">
+              <div key={industry.title} className="rounded-3xl border border-[var(--border)] bg-[var(--background)] p-6 sm:p-8 transition-transform hover:-translate-y-1">
                 <div className="mx-auto mb-6 w-14 h-14 rounded-2xl bg-slate-100 flex items-center justify-center text-slate-900">
                   <Icon size={28} />
                 </div>
@@ -249,7 +250,7 @@ export function IndustriesGrid() {
 
 export function EngagementModels() {
   return (
-    <section style={{ backgroundColor: 'var(--background)' }} className="py-16 px-4 sm:px-6 lg:px-8">
+    <section style={{ backgroundColor: 'var(--background)' }} className="py-14 sm:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 style={{ color: 'var(--foreground)' }} className="text-3xl sm:text-4xl font-bold mb-4">
@@ -259,11 +260,11 @@ export function EngagementModels() {
             Flexible engagement structures built around your team and goals.
           </p>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {engagementModels.map((model) => {
             const Icon = model.icon
             return (
-              <div key={model.title} className="rounded-3xl border border-[var(--border)] bg-[var(--secondary)] p-8 shadow-sm">
+              <div key={model.title} className="rounded-3xl border border-[var(--border)] bg-[var(--secondary)] p-6 sm:p-8 shadow-sm">
                 <div className="flex items-start justify-between gap-4 mb-6">
                   <Icon size={24} className="text-[var(--accent)]" />
                   {model.popular ? (
@@ -289,48 +290,32 @@ export function EngagementModels() {
 }
 
 export function MeetTheTeam() {
+  // Replace team with Process overview to avoid fake team impression
   return (
     <section id="about" style={{ backgroundColor: 'var(--secondary)' }} className="py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 style={{ color: 'var(--foreground)' }} className="text-3xl sm:text-4xl font-bold mb-4">
-            The team behind Keytrain
+            Our Process
           </h2>
           <p style={{ color: 'var(--muted-foreground)' }} className="text-lg max-w-2xl mx-auto">
-            Engineer-led from day one. No account managers, no middlemen.
+            A predictable, engineering-first approach that reduces risk and accelerates outcomes.
           </p>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-2 xl:grid-cols-4 gap-6">
-          {teamMembers.map((member) => (
-            <div key={member.name} className="rounded-3xl border border-[var(--border)] bg-[var(--background)] p-8">
-              <div className="mb-6">
-                <div
-                  style={{ backgroundColor: member.color }}
-                  className="w-14 h-14 rounded-full flex items-center justify-center font-bold text-white text-lg"
-                >
-                  {member.initials}
-                </div>
-              </div>
-              <h3 style={{ color: 'var(--foreground)' }} className="text-xl font-bold mb-1">
-                {member.name}
-              </h3>
-              <p style={{ color: 'var(--accent)' }} className="text-sm font-semibold mb-4">
-                {member.role}
-              </p>
-              <p style={{ color: 'var(--muted-foreground)' }} className="text-sm leading-relaxed mb-6">
-                {member.bio}
-              </p>
-              <a
-                href="https://www.linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-sm font-semibold text-slate-900 hover:underline"
-              >
-                <Linkedin size={16} />
-                View profile
-              </a>
-            </div>
-          ))}
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-6">
+            <h4 className="font-semibold mb-2">Discovery</h4>
+            <p style={{ color: 'var(--muted-foreground)' }} className="text-sm">Rapid assessment, stakeholder interviews, and success criteria.</p>
+          </div>
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-6">
+            <h4 className="font-semibold mb-2">Planning</h4>
+            <p style={{ color: 'var(--muted-foreground)' }} className="text-sm">Technical roadmap, architecture, and milestone-based proposals.</p>
+          </div>
+          <div className="rounded-2xl border border-[var(--border)] bg-[var(--background)] p-6">
+            <h4 className="font-semibold mb-2">Delivery</h4>
+            <p style={{ color: 'var(--muted-foreground)' }} className="text-sm">Weekly sprints, demos, and measurable outcomes.</p>
+          </div>
         </div>
       </div>
     </section>
@@ -338,10 +323,8 @@ export function MeetTheTeam() {
 }
 
 export function FAQSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null)
-
   return (
-    <section style={{ backgroundColor: 'var(--background)' }} className="py-16 px-4 sm:px-6 lg:px-8">
+    <section id="faq" style={{ backgroundColor: 'var(--background)' }} className="py-14 sm:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 style={{ color: 'var(--foreground)' }} className="text-3xl sm:text-4xl font-bold mb-4">
@@ -351,30 +334,21 @@ export function FAQSection() {
             Everything you need to know before our first call.
           </p>
         </div>
-        <div className="grid grid-cols-1 gap-4">
+
+        <Accordion type="single" collapsible className="grid gap-3 sm:gap-4">
           {faqs.map((faq, index) => (
-            <div key={faq.question} className="rounded-3xl border border-[var(--border)] bg-[var(--secondary)] p-6">
-              <button
-                type="button"
-                onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="flex w-full items-center justify-between gap-4 text-left"
-              >
-                <span style={{ color: 'var(--foreground)' }} className="text-base font-semibold">
-                  {faq.question}
-                </span>
-                <ChevronDown
-                  size={20}
-                  className={`transform transition-transform duration-200 ${openIndex === index ? 'rotate-180' : 'rotate-0'}`}
-                />
-              </button>
-              {openIndex === index ? (
-                <p style={{ color: 'var(--muted-foreground)' }} className="mt-4 text-sm leading-relaxed">
+            <AccordionItem key={faq.question} value={`faq-${index}`} className="rounded-3xl border border-[var(--border)] bg-[var(--secondary)] p-4 sm:p-6">
+              <AccordionTrigger className="text-base font-semibold text-[var(--foreground)]">
+                {faq.question}
+              </AccordionTrigger>
+              <AccordionContent>
+                <p style={{ color: 'var(--muted-foreground)' }} className="text-sm leading-relaxed">
                   {faq.answer}
                 </p>
-              ) : null}
-            </div>
+              </AccordionContent>
+            </AccordionItem>
           ))}
-        </div>
+        </Accordion>
       </div>
     </section>
   )
@@ -384,55 +358,122 @@ export function ContactFormSection() {
   const [formState, setFormState] = useState({
     name: '',
     email: '',
-    company: '',
-    companySize: '50–200',
-    service: servicesOptions[0],
     message: '',
+    honeypot: '',
   })
   const [submitted, setSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
+  const validate = (state: typeof formState) => {
+    const nextErrors: Record<string, string> = {}
+    if (!state.name.trim()) nextErrors.name = 'Full name is required.'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email.trim())) nextErrors.email = 'Enter a valid work email.'
+    if (state.message.trim().length < 20) nextErrors.message = 'Message must be at least 20 characters.'
+    return nextErrors
+  }
 
   const handleChange = (field: string, value: string) => {
     setFormState((prev) => ({ ...prev, [field]: value }))
   }
 
-  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setErrors(validate(formState))
+    }, 300)
+
+    return () => clearTimeout(timeout)
+  }, [formState])
+
+  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-    setSubmitted(true)
+    const nextErrors = validate(formState)
+    setErrors(nextErrors)
+    if (Object.keys(nextErrors).length > 0) return
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formState.name,
+          email: formState.email,
+          message: formState.message,
+          honeypot: formState.honeypot,
+          company: 'Not provided',
+          service: 'General Inquiry',
+          budget: 'Not specified',
+          timeline: 'Not specified',
+        }),
+      })
+      const data = await response.json()
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.message || 'Unable to send your message. Please try again.')
+      }
+
+      setSubmitted(true)
+      toast({
+        title: 'Message sent',
+        description: 'Your message is in our inbox. Expect a reply within 1 business day.',
+      })
+      setFormState({ name: '', email: '', message: '', honeypot: '' })
+      setErrors({})
+    } catch (error) {
+      toast({
+        title: 'Submission failed',
+        description: error instanceof Error ? error.message : 'Unable to send the form.',
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
-    <section style={{ backgroundColor: 'var(--secondary)' }} className="py-16 px-4 sm:px-6 lg:px-8">
+    <section id="contact" style={{ backgroundColor: 'var(--secondary)' }} className="py-14 sm:py-16 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 style={{ color: 'var(--foreground)' }} className="text-3xl sm:text-4xl font-bold mb-4">
             Start a conversation
           </h2>
           <p style={{ color: 'var(--muted-foreground)' }} className="text-lg max-w-2xl mx-auto">
-            Tell us about your project. We&apos;ll respond within 1 business day.
+            Tell us what you are building and where you need help.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-          <form onSubmit={handleSubmit} className="space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--background)] p-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-10">
+          <form onSubmit={handleSubmit} className="space-y-5 sm:space-y-6 rounded-3xl border border-[var(--border)] bg-[var(--background)] p-5 sm:p-8">
             {submitted ? (
               <div className="rounded-3xl bg-emerald-100 p-6 text-center">
-                <p className="text-lg font-semibold text-emerald-900">Thanks! We&apos;ll be in touch within one business day.</p>
+                <p className="text-lg font-semibold text-emerald-900">Thanks. We will be in touch within one business day.</p>
               </div>
             ) : (
               <>
+                <label className="hidden" aria-hidden="true">
+                  <span>Leave empty</span>
+                  <input
+                    value={formState.honeypot}
+                    onChange={(event) => handleChange('honeypot', event.target.value)}
+                    tabIndex={-1}
+                    autoComplete="off"
+                  />
+                </label>
+
                 <div className="grid grid-cols-1 gap-6">
                   <label className="space-y-2 text-sm font-medium text-slate-900">
-                    <span>Full name</span>
+                    <span>Full Name</span>
                     <input
                       value={formState.name}
                       onChange={(event) => handleChange('name', event.target.value)}
                       required
                       className="w-full rounded-2xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400"
                     />
+                    {errors.name ? <span className="text-xs text-red-600">{errors.name}</span> : null}
                   </label>
 
                   <label className="space-y-2 text-sm font-medium text-slate-900">
-                    <span>Work email</span>
+                    <span>Work Email</span>
                     <input
                       type="email"
                       value={formState.email}
@@ -440,113 +481,91 @@ export function ContactFormSection() {
                       required
                       className="w-full rounded-2xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400"
                     />
+                    {errors.email ? <span className="text-xs text-red-600">{errors.email}</span> : null}
                   </label>
 
                   <label className="space-y-2 text-sm font-medium text-slate-900">
-                    <span>Company name</span>
-                    <input
-                      value={formState.company}
-                      onChange={(event) => handleChange('company', event.target.value)}
-                      required
-                      className="w-full rounded-2xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400"
-                    />
-                  </label>
-                </div>
-
-                <div className="grid grid-cols-1 gap-6">
-                  <label className="space-y-2 text-sm font-medium text-slate-900">
-                    <span>Company size</span>
-                    <select
-                      value={formState.companySize}
-                      onChange={(event) => handleChange('companySize', event.target.value)}
-                      className="w-full rounded-2xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400"
-                    >
-                      <option>50–200</option>
-                      <option>200–500</option>
-                      <option>500–2000</option>
-                      <option>2000+</option>
-                    </select>
-                  </label>
-
-                  <label className="space-y-2 text-sm font-medium text-slate-900">
-                    <span>Service interested in</span>
-                    <select
-                      value={formState.service}
-                      onChange={(event) => handleChange('service', event.target.value)}
-                      className="w-full rounded-2xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400"
-                    >
-                      {servicesOptions.map((service) => (
-                        <option key={service} value={service}>{service}</option>
-                      ))}
-                    </select>
-                  </label>
-
-                  <label className="space-y-2 text-sm font-medium text-slate-900">
-                    <span>Tell us about your project</span>
+                    <span>How can we help?</span>
                     <textarea
-                      rows={4}
+                      rows={5}
                       value={formState.message}
                       onChange={(event) => handleChange('message', event.target.value)}
                       required
                       className="w-full rounded-2xl border border-[var(--border)] bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-slate-400"
                     />
+                    {errors.message ? <span className="text-xs text-red-600">{errors.message}</span> : null}
                   </label>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full rounded-2xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 transition-colors"
+                  disabled={isSubmitting}
+                  className="w-full rounded-2xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white hover:bg-blue-700 disabled:opacity-70 transition-colors"
                 >
-                  Send message →
+                  {isSubmitting ? 'Sending...' : 'Send message ->'}
                 </button>
               </>
             )}
           </form>
 
-          <div className="rounded-3xl border border-[var(--border)] bg-[var(--background)] p-8 flex flex-col justify-between gap-8">
-            <div className="space-y-6">
+          <div className="rounded-3xl border border-[var(--border)] bg-[var(--background)] p-5 sm:p-8 flex flex-col justify-between gap-6 sm:gap-8">
+            <div className="space-y-5 sm:space-y-6">
               <div className="flex items-start gap-4">
                 <Cloud size={20} className="text-[var(--accent)]" />
-                <div>
-                  <p style={{ color: 'var(--foreground)' }} className="font-semibold">hello@keytrain.io</p>
-                </div>
+                <div><p style={{ color: 'var(--foreground)' }} className="font-semibold">hello@keytrain.io</p></div>
               </div>
               <div className="flex items-start gap-4">
                 <Clock4 size={20} className="text-[var(--accent)]" />
-                <div>
-                  <p style={{ color: 'var(--foreground)' }} className="font-semibold">Response within 1 business day</p>
-                </div>
+                <div><p style={{ color: 'var(--foreground)' }} className="font-semibold">Response within 24 hours</p></div>
               </div>
               <div className="flex items-start gap-4">
                 <CircleCheck size={20} className="text-[var(--accent)]" />
-                <div>
-                  <p style={{ color: 'var(--foreground)' }} className="font-semibold">Free 30-min discovery call included</p>
-                </div>
-              </div>
-              <div className="flex items-start gap-4">
-                <Globe2 size={20} className="text-[var(--accent)]" />
-                <div>
-                  <p style={{ color: 'var(--foreground)' }} className="font-semibold">US & Europe timezone coverage</p>
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <div style={{ borderTopColor: 'var(--border)' }} className="border-t pt-6">
-                <p style={{ color: 'var(--muted-foreground)' }} className="text-sm mb-4">
-                  Or book directly:
-                </p>
-                <a
-                  href="https://calendly.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex w-full items-center justify-center rounded-2xl border border-slate-300 px-4 py-3 text-sm font-semibold text-slate-900 hover:bg-slate-100 transition-colors"
-                >
-                  Schedule on Calendly →
-                </a>
+                <div><p style={{ color: 'var(--foreground)' }} className="font-semibold">Free consultation and scoped proposal</p></div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+export function InsightsSection() {
+  const posts = [
+    {
+      title: 'How AI Automation Cuts Delivery Cost in Mid-Market Teams',
+      excerpt: 'A practical framework for identifying high-ROI automation opportunities in operations and product workflows.',
+      href: '/case-studies',
+    },
+    {
+      title: 'Modern Cloud Foundations for Fast-Growth SaaS',
+      excerpt: 'Key infrastructure decisions that improve reliability while keeping cloud spend under control.',
+      href: '/services/cloud-solutions',
+    },
+    {
+      title: 'From Pilot to Production: Shipping AI Features Safely',
+      excerpt: 'What changes between MVP and production readiness, including observability, governance, and iteration speed.',
+      href: '/services/custom-ai-solutions',
+    },
+  ]
+
+  return (
+    <section id="insights" className="py-14 sm:py-16 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-4">Latest Insights</h2>
+          <p className="text-lg text-[var(--muted-foreground)] max-w-2xl mx-auto">Fresh thinking on AI, software delivery, and infrastructure strategy.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
+          {posts.map((post) => (
+            <a key={post.title} href={post.href} className="rounded-3xl border border-[var(--border)] bg-[var(--background)] overflow-hidden hover:shadow-md transition-shadow">
+              <div className="aspect-video w-full bg-slate-200" />
+              <div className="p-6">
+                <h3 className="text-lg font-semibold text-[var(--foreground)] mb-3">{post.title}</h3>
+                <p className="text-sm text-[var(--muted-foreground)] leading-relaxed">{post.excerpt}</p>
+              </div>
+            </a>
+          ))}
         </div>
       </div>
     </section>

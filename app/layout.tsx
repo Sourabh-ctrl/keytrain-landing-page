@@ -3,13 +3,38 @@ import { Syne, DM_Sans } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
-const syne = Syne({ subsets: ["latin"], variable: '--font-display' })
-const dmSans = DM_Sans({ subsets: ["latin"], variable: '--font-sans' })
+const syne = Syne({ subsets: ['latin'], variable: '--font-display' })
+const dmSans = DM_Sans({ subsets: ['latin'], variable: '--font-sans' })
 
 export const metadata: Metadata = {
-  title: 'Keytrain - AI-Powered SEO Optimization',
-  description: 'Master SEO with AI-driven training and optimization. Unlock your website\'s potential with Keytrain.',
-  generator: 'v0.app',
+  title: 'Keytrain | AI, Software & IT Consulting',
+  description:
+    'Keytrain builds scalable AI, software, and IT systems for startups and mid-market companies. Book a free consultation and launch reliable production solutions.',
+  metadataBase: new URL('https://keytrain.io'),
+  alternates: {
+    canonical: '/',
+  },
+  openGraph: {
+    title: 'Keytrain | AI, Software & IT Consulting',
+    description:
+      'Keytrain builds scalable AI, software, and IT systems for startups and mid-market companies. Book a free consultation and launch reliable production solutions.',
+    type: 'website',
+    url: 'https://keytrain.io',
+    images: [
+      {
+        url: '/icon.svg',
+        alt: 'Keytrain',
+      },
+    ],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+    },
+  },
   icons: {
     icon: [
       {
@@ -35,8 +60,8 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${syne.variable} ${dmSans.variable}`}>
-      <body className="font-sans antialiased">
+    <html lang="en" data-scroll-behavior="smooth" className={`${syne.variable} ${dmSans.variable}`}>
+      <body className="font-sans antialiased scroll-smooth">
         {children}
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
